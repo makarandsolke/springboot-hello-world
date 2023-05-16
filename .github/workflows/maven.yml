@@ -10,17 +10,17 @@ name: Build SpringBoot Project with Maven
 
 on:
   push:
-    branches: [ "feature/*" ]
+    branches: 
+    - "feature/*"
   pull_request:
-    branches: [ "master" ]
+    branches: 
+    - "master"
     types:
     - closed
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
