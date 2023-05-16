@@ -13,6 +13,8 @@ on:
     branches: [ "feature/*" ]
   pull_request:
     branches: [ "master" ]
+    types:
+    - closed
 
 jobs:
   build:
@@ -25,16 +27,14 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: '11'
-        cache: maven
+        distribution: 'temurin'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - name: Creating docker image
-      uses: cloudposse/github-action-docker-build-push@1.12.0
+    - uses: mr-smithers-excellent/docker-build-push@v5
+      name: Build & push Docker image
       with:
+        image: makdocr24/springboot-example
+        tags: 1.0
         registry: docker.io
-        # Image name (excluding registry). Defaults to {{$organization/$repository}}.
-        image_name: makdocr/springboot-app
-        # Docker login
-        login: ${{ secrets.DOCKER_USERNAME }}
-        # Docker password
+        username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
